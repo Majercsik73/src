@@ -1,0 +1,55 @@
+
+<table class="table table-striped">
+    <thead >
+        <tr>
+            <th style="display:none;">id</th>
+            <th>település</th>
+            <th>hely</th>
+            <th> N:</th>
+            <th> E:</th>
+            <th>útszám</th>
+            <th>táv</th>
+            <th>fel</th>
+            <th>le</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php 
+            $ossztav = 0;
+            $osszfel = 0;
+            $osszle = 0;
+            foreach ($params['telepulesek'] as $telepules) : 
+                $ossztav += $telepules['tav'];
+                $osszfel += $telepules['fel'];
+                $osszle += $telepules['le'];
+            ?>
+        <tr>
+            <td style="display:none;"><?= $telepules['id']?></td>    
+            <td><?= $telepules['telepules']?></td>
+            <td><?= $telepules['hely']?></td>
+            <td><?= $telepules['locn']?></td>
+            <td><?= $telepules['loce']?></td> 
+            <td><?= $telepules['utszam']?></td>   
+            <td><?= $telepules['tav']?></td>
+            <td><?= $telepules['fel']?></td>
+            <td><?= $telepules['le']?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<h3>
+    Össztáv: 
+    <?= $ossztav ?>
+    km
+</h3>
+<h3>
+    Összes fel: 
+    <?= $osszfel ?>
+    méter
+</h3>
+<h3>
+    Összes le: 
+    <?= $osszle ?>
+    méter
+</h3>

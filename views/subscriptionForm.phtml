@@ -1,0 +1,67 @@
+<div class="card p-3 m-2">
+    <div class="jumbotron text-center">
+        <h2>A tartalom megtekintéséhez bejelentkezés szükséges</h2>
+    </div>
+</div>
+
+<?php if ($params['info'] === "registrationSuccessful") : ?>
+    <div class="alert alert-success">
+        Regisztráció sikeres 
+    </div>
+<?php endif ?>
+
+<?php if ($params['info'] === "invalidCredentials") : ?>
+    <div class="alert alert-danger">
+        Helytelen bejelentkezési adatok
+    </div>
+<?php endif ?>
+
+<?php if ($params['info'] === "existingEmail") : ?>
+    <div class="alert alert-danger">
+        A megadott email címmel már van regisztráció! Kérem adjon meg egy másikat!
+    </div>
+<?php endif ?>
+
+<?php if ($params['info'] === "noData") : ?>
+    <div class="alert alert-danger">
+        Regisztrációhoz a mezők kitöltése kötelező!
+    </div>
+<?php endif ?>
+
+<?php if ($params['isRegistration'] || $params['info'] === "existingEmail" || $params['info'] === "noData") : ?>
+    <form action="/KODB_PHP15_Orszagok/register" method="POST"> 
+    
+    <label class="w-100">
+        Email cím:
+        <input class="form-control" type="email" name="email">
+    </label>
+
+    <label class="w-100">
+        Jelszó:
+        <input class="form-control" type="password" name="password">
+    </label>
+    <button type="submit" class="btn btn-success form-control">Regisztráció</button>
+    Van már felhasználói fiókod?
+    <a href="<?= $params['url'] ?>">Bejelentkezés</a>
+    </form>
+
+<?php else : ?>
+    <form action="/KODB_PHP15_Orszagok/login" method="POST">
+    <label class="w-100">
+        Email cím:
+        <input class="form-control" type="email" name="email">
+    </label>
+
+    <label class="w-100">
+        Jelszó:
+        <input class="form-control" type="password" name="password">
+    </label>
+    <button type="submit" class="btn btn-primary form-control">Bejelentkezés</button>
+    Nincs még felhasználói fiókod?
+    <a href="<?= $params['url'] ?>&isRegistration=1">Regisztráció</a>
+</form>
+<?php endif ?>
+
+
+
+

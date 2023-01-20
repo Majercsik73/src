@@ -1,0 +1,95 @@
+<hr>
+<form class="row g-3" action="/Bringatura_MKK/utvonal" method="POST">
+    <div class="col-auto">
+        <label>Start: </label>
+        <select class="form-select form-select-lg mb-3" name="start">
+            <?php foreach ($params['osszesTelepules'] as $telepules) : ?>
+                <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label>Érintésével: </label>
+        <select class="form-select form-select-lg mb-3" name="touching">
+            <?php foreach ($params['osszesTelepules'] as $telepules) : ?>
+                <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label>Cél: </label>
+        <select class="form-select form-select-lg mb-3" name="end">
+            <?php foreach ($params['osszesTelepules'] as $telepules) : ?>
+                <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success">Mutasd az utat</button>
+</form>
+<hr>
+<h3>Start:</h3>
+<h5><?= $params['telepulesek'][0]['telepules']?></h5>
+<?php 
+    $hossz = count($params['telepulesek']);
+?>
+<hr>
+<h3>Cél:</h3>
+<h5><?= $params['telepulesek'][$hossz-1]['telepules']?></h5>
+<hr>
+<h3>Útvonal:</h3>
+<table class="table table-striped">
+    <thead >
+        <tr>
+            <th style="display:none;">id</th>
+            <th>település</th>
+            <th>hely</th>
+            <th>locn</th>
+            <th>loce</th>
+            <th>útszám</th>
+            <th>táv</th>
+            <th>fel</th>
+            <th>le</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php 
+            $ossztav = 0;
+            $osszfel = 0;
+            $osszle = 0;
+            //var_dump($params['telepulesek']);
+            for ($i = 0; $i < count($params['telepulesek']); $i++) : 
+                $telepulesek = $params['telepulesek'][$i];
+
+                $ossztav += $telepulesek['tav'];
+                $osszfel += $telepulesek['fel'];
+                $osszle += $telepulesek['le'];
+            ?>
+            <tr>
+                <td style="display:none;"><?= $telepulesek['id']?></td>    
+                <td><?= $telepulesek['telepules']?></td>
+                <td><?= $telepulesek['hely']?></td>
+                <td><?= $telepulesek['locn']?></td>
+                <td><?= $telepulesek['loce']?></td> 
+                <td><?= $telepulesek['utszam']?></td>   
+                <td><?= $telepulesek['tav']?></td>
+                <td><?= $telepulesek['fel']?></td>
+                <td><?= $telepulesek['le']?></td>
+            </tr>
+        <?php endfor; ?>
+    </tbody>
+</table>
+<h3>
+    Össztáv: 
+    <?= $ossztav ?>
+    km
+</h3>
+<h3>
+    Összes fel: 
+    <?= $osszfel ?>
+    méter
+</h3>
+<h3>
+    Összes le: 
+    <?= $osszle ?>
+    méter
+</h3>

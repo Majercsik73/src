@@ -1,0 +1,67 @@
+<hr>
+<form class="row g-3" action="/Bringatura_MKK/utvonal" method="POST">
+    <div class="col-auto">
+        <label>Start: </label>
+        <select class="form-select form-select-lg mb-3" name="start">
+            <?php foreach ($params['telepulesek'] as $telepules) : ?>
+                <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label>Érintésével: </label>
+        <select class="form-select form-select-lg mb-3" name="touching">
+            <?php foreach ($params['telepulesek'] as $telepules) : ?>
+                <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label>Cél: </label>
+        <select class="form-select form-select-lg mb-3" name="end">
+            <?php foreach ($params['telepulesek'] as $telepules) : ?>
+                <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success">Mutasd az utat</button>
+</form>
+<hr>
+<form class="row g-3" action="/Bringatura_MKK/utvonal-km" method="POST">
+    <div class="col-auto">
+    <label>Start: </label>
+        <select class="form-select form-select-lg mb-3" name="startId">
+            <?php foreach ($params['telepulesek'] as $telepules) : ?>
+                <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label>Érintésével: </label>
+        <select class="form-select form-select-lg mb-3" name="touchId1">
+            <?php foreach ($params['telepulesek'] as $telepules) : ?>
+                <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label>Érintésével: </label>
+        <select class="form-select form-select-lg mb-3" name="touchId2">
+            <?php foreach ($params['telepulesek'] as $telepules) : ?>
+                <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="col-auto">
+        <select class="form-select form-select-lg mb-3" name="km">
+            <option value=60>60 km</option>
+            <option value=80>80 km</option>
+            <option value=100>100 km</option>
+            <option value=120>120 km</option>
+            <option value=140>140 km</option>
+            <option value=160>160 km</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success">Mutasd az utat</button>
+</form>
+

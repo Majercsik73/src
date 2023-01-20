@@ -1,0 +1,226 @@
+<hr>
+<form class="row g-3" action="/Bringatura_MKK/utvonal-km" method="POST">
+    <div class="col-auto">
+    <label>Start: </label>
+        <select class="form-select form-select-lg mb-3" name="startId">
+            <?php foreach ($params['osszesTelepules'] as $telepules) : ?>
+                <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label>Érintésével: </label>
+        <select class="form-select form-select-lg mb-3" name="touchId1">
+            <?php foreach ($params['osszesTelepules'] as $telepules) : ?>
+                <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label>Érintésével: </label>
+        <select class="form-select form-select-lg mb-3" name="touchId2">
+            <?php foreach ($params['osszesTelepules'] as $telepules) : ?>
+                <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="col-auto">
+        <select class="form-select form-select-lg mb-3" name="km">
+            <option value=60>60 km</option>
+            <option value=80>80 km</option>
+            <option value=100>100 km</option>
+            <option value=120>120 km</option>
+            <option value=140>140 km</option>
+            <option value=160>160 km</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success">Mutasd az utat</button>
+</form>
+<hr>
+
+
+<h3>Útvonal:</h3>
+<?php 
+    $a = 1;
+    $ossztav = 0;
+    $tavszorzo = 0;
+    $osszesTavolsag = 0;
+    $szakaszSzama = 1;
+    switch ($params['km']) {
+        case 60:
+            $tavszorzo = 60*90/100;
+            $osszesTavolsag = 1900;
+            break;
+        case 80:
+            $tavszorzo = 80*90/100;
+            $osszesTavolsag = 1900;
+            break;
+        case 100:
+            $tavszorzo = 100*90/100;
+            $osszesTavolsag = 1900;
+            break;
+        case 120:
+            $tavszorzo = 120*90/100;
+            $osszesTavolsag = 1800;
+            break;
+        case 140:
+            $tavszorzo = 140*95/100;
+            $osszesTavolsag = 1800;
+            break;
+        default:
+            $tavszorzo = 160*96/100;
+            $osszesTavolsag = 1800;
+        }
+    while ($ossztav <= $osszesTavolsag) ://$a <= count($params['telepulesek'])-1) : ?>
+    <h5><?= $szakaszSzama ?>. szakasz</h5>
+    <table class="table table-striped">
+    <thead >
+        <tr>
+            <th style="display:none;">id</th>
+            <th>település</th>
+            <th>hely</th>
+            <th>locn</th>
+            <th>loce</th>
+            <th>útszám</th>
+            <th>táv</th>
+            <th>fel</th>
+            <th>le</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php 
+            
+        $osszfel = 0;
+        $osszle = 0;
+        //echo"<pre>";
+        //var_dump($params['telepulesek']);
+        $tav = 0;
+        $first = true;
+        $a -= 1; //azért kell, hogy a táblázat első sora, mindig az előző táblázat utolsó sora legyen
+        //var_dump("while előtt:  ", $first);
+        while ($tav <= $tavszorzo) :// 
+            
+            if ($a == 0)
+            {
+                $telepulesek = $params['telepulesek'][$a];
+                //$a += 2;
+                $first = false;
+            }
+            elseif ($first == true) // ha ez az adott táblázat első sora, kinullázza az értékeket
+            {
+                $telepulesek = $params['telepulesek'][$a];
+                $telepulesek['tav'] = 0;
+                $telepulesek['utszam'] = '----';
+                $telepulesek['fel'] = 0;
+                $telepulesek['le'] = 0;
+                //$a += 1;
+                $first = false;
+            }
+            
+            else
+            {
+                $telepulesek = $params['telepulesek'][$a];
+            }
+            //var_dump($a, $first);
+
+            $tav += $telepulesek['tav'];
+            $ossztav += $telepulesek['tav'];
+            $osszfel += $telepulesek['fel'];
+            $osszle += $telepulesek['le'];
+            $a++;
+    ?>
+        <tr>
+            <td style="display:none;"><?= $telepulesek['id']?></td>    
+            <td><?= $telepulesek['telepules']?></td>
+            <td><?= $telepulesek['hely']?></td>
+            <td><?= $telepulesek['locn']?></td>
+            <td><?= $telepulesek['loce']?></td> 
+            <td><?= $telepulesek['utszam']?></td>   
+            <td><?= $telepulesek['tav']?></td>
+            <td><?= $telepulesek['fel']?></td>
+            <td><?= $telepulesek['le']?></td>
+        </tr>
+    <?php endwhile;?>      
+    </tbody>
+</table>
+<hr>
+<hr>
+<h3>Szakasz táv: <?= $tav ?> km</h3>
+<h3>Összes fel: <?= $osszfel ?> méter</h3>
+<h3>Összes le: <?= $osszle ?> méter</h3>
+<h3>Össztáv: <?= $ossztav ?> km</h3>
+<hr>
+<hr>
+<?php $szakaszSzama++; ?>
+
+                
+<?php endwhile ?>
+<!--<h3> 'a' értéke:  <?= $a ?> </h3>-->
+<?php 
+    if ($a < count($params['telepulesek'])) : ?>
+    <h5><?= $szakaszSzama ?>. szakasz</h5>
+    <table class="table table-striped">
+    <thead >
+        <tr>
+            <th style="display:none;">id</th>
+            <th>település</th>
+            <th>hely</th>
+            <th>locn</th>
+            <th>loce</th>
+            <th>útszám</th>
+            <th>táv</th>
+            <th>fel</th>
+            <th>le</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php 
+            $tav = 0;
+            $osszfel = 0;
+            $osszle = 0;
+            $first = true;
+            $a -= 1;
+            //var_dump($params['telepulesek']);
+            for ($a; $a < count($params['telepulesek']); $a++) : 
+                
+                if ($first == true) // ha ez az adott táblázat első sora, kinullázza az értékeket
+                {
+                    $telepulesek = $params['telepulesek'][$a];
+                    $telepulesek['tav'] = 0;
+                    $telepulesek['utszam'] = '----';
+                    $telepulesek['fel'] = 0;
+                    $telepulesek['le'] = 0;
+                    //$a += 1;
+                    $first = false;
+                }
+                
+                else
+                {
+                    $telepulesek = $params['telepulesek'][$a];
+                }
+            
+                $tav += $telepulesek['tav'];
+                $ossztav += $telepulesek['tav'];
+                $osszfel += $telepulesek['fel'];
+                $osszle += $telepulesek['le'];
+            ?>
+            <tr>
+                <td style="display:none;"><?= $telepulesek['id']?></td>    
+                <td><?= $telepulesek['telepules']?></td>
+                <td><?= $telepulesek['hely']?></td>
+                <td><?= $telepulesek['locn']?></td>
+                <td><?= $telepulesek['loce']?></td> 
+                <td><?= $telepulesek['utszam']?></td>   
+                <td><?= $telepulesek['tav']?></td>
+                <td><?= $telepulesek['fel']?></td>
+                <td><?= $telepulesek['le']?></td>
+            </tr>
+        <?php endfor; ?>
+    </tbody>
+</table>
+
+<h3>Szakasz táv: <?= $tav ?> km</h3>
+<h3>Összes fel: <?= $osszfel ?> méter</h3>
+<h3>Összes le: <?= $osszle ?> méter </h3>
+<h3>Össztáv: <?= $ossztav ?> km</h3>
+<?php endif; ?>

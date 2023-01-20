@@ -1,0 +1,12 @@
+body {
+    background-color: royalblue;
+}
+
+.container {
+    background-color: azure;
+}
+
+.nav-link{
+    font-size: 30px;
+    font-weight: bold;
+  }
